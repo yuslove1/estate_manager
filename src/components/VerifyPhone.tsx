@@ -33,7 +33,7 @@ export default function VerifyPhone() {
     if (data.success) {
       setStep("otp");
     } else {
-      setError(data.error || "Number not in estate list");
+      setError(data.error || "Failed. Is your number in the estate list?");
     }
     setLoading(false);
   };
@@ -51,16 +51,17 @@ export default function VerifyPhone() {
     const data = await res.json();
 
     if (data.success) {
-      // ONE-TIME LOGIN — lasts 1 year
+      // ONE-TIME LOGIN — lasts 1 year, production-safe
       setCookie("verified_phone", phone, {
         maxAge: 60 * 60 * 24 * 365,
         path: "/",
         sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",  // Secure in production
       });
 
       window.location.href = "/gate";
     } else {
-      setError(data.error || "Wrong code");
+      setError(data.error || "Invalid code");
     }
     setLoading(false);
   };
@@ -73,55 +74,43 @@ export default function VerifyPhone() {
         </h1>
         <p className="text-slate-300 mb-12">
           {step === "phone"
-            ? "Enter your estate number to continue"
+            ? "Enter your estate WhatsApp number to continue"
             : `Enter the code sent to ${phone}`}
         </p>
 
         {step === "phone" ? (
           <>
-            <div className="relative mb-6">
-              <PhoneInput
-                international
-                countryCallingCodeEditable={false}
-                defaultCountry="NG"
-                value={phone}
-                onChange={(v) => setPhone(v || "")}
-                placeholder="Enter phone number"
-                className="custom-phone-input"
-              />
-            </div>
-
+            <PhoneInput
+              international
+              defaultCountry="NG"
+              value={phone}
+              onChange={(v) => setPhone(v || "")}
+              className="mb-6"
+              placeholder="0801 234 5678"
+            />
             <button
               onClick={sendOTP}
-              disabled={loading || !phone}
-              className="w-full py-4 bg-emerald-600 rounded-xl font-bold text-lg hover:bg-emerald-500 disabled:opacity-50 transition"
+              disabled={loading}
+              className="w-full py-4 bg-emerald-600 rounded-xl font-bold text-lg hover:bg-emerald-500 disabled:opacity-50"
             >
-              {loading ? "Sending..." : "Send Code"}
+              {loading ? "Sending..." : "Send Code via WhatsApp"}
             </button>
           </>
         ) : (
           <>
             <input
               type="text"
-              inputMode="numeric"
-              autoFocus
               value={otp}
-              onChange={(e) =>
-                setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))
-              }
-              placeholder="------"
-              className="w-full text-center text-5xl md:text-6xl font-bold tracking-widest 
-             bg-slate-800/90 border-2 border-slate-700 rounded-2xl py-8 mb-6
-             text-white placeholder-slate-500
-             focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/30
-             transition-all"
+              onChange={(e) => setOtp(e.target.value)}
+              placeholder="Enter 6-digit code"
+              className="w-full text-center text-4xl tracking-widest bg-slate-800 py-6 rounded-xl mb-6 text-white placeholder-slate-400"
+              maxLength={6}
             />
             <button
               onClick={verifyOTP}
-              disabled={loading}
-              className="w-full py-4 bg-emerald-600 rounded-xl font-bold text-lg hover:bg-emerald-500 disabled:opacity-50"
+              className="w-full py-4 bg-emerald-600 rounded-xl font-bold text-lg hover:bg-emerald-500"
             >
-              {loading ? "Verifying..." : "Enter Gate"}
+              Verify & Enter
             </button>
           </>
         )}

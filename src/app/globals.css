@@ -53,3 +53,31 @@ body {
   opacity: 0.6;
   margin-right: 1rem;
 }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #475569 #1e293b;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 4px;
+}
+
+input, textarea {
+  color: white !important;
+  border: none !important;
+  outline: none !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #64748b !important;
+}

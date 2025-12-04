@@ -266,3 +266,27 @@ export const Constants = {
     Enums: {},
   },
 } as const
+
+// src/utils/supabase/types.ts
+export type Resident = {
+  id: string;
+  phone: string;
+  full_name: string | null;
+  house_number: string | null;
+  is_admin: boolean;
+  created_at: string;
+};
+
+export type Announcement = {
+  id: string;
+  title: string;
+  message: string;
+  is_important: boolean;
+  created_at: string;
+};
+
+export type GatePass = {
+  id?: string;
+  date: string;
+  code: string;
+};
