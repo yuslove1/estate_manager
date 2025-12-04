@@ -1,6 +1,7 @@
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
 function generateCode() {
   // 4-digit numeric code (estate standard)
   return String(Math.floor(1000 + Math.random() * 9000));
