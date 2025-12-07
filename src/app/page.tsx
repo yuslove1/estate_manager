@@ -1,26 +1,20 @@
-import { createSupabaseServerClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
 import VerifyPhone from "@/components/VerifyPhone";
 
-export const revalidate = 0;
+export default function Home() {
+  return (
+    <main className="min-h-screen bg-[var(--bg-primary)] py-12">
+      <div className="container flex items-center justify-center">
+        <div className="estate-bg card p-8 md:p-12 w-full max-w-md text-center">
+          <VerifyPhone />
 
-export default async function Home() {
-  const supabase = await createSupabaseServerClient();
-
-  const cookieStore = await import('next/headers').then(m => m.cookies());
-  const verifiedPhone = cookieStore.get("verified_phone")?.value;
-
-  if (verifiedPhone) {
-    const { data } = await supabase
-      .from("residents")
-      .select("phone")
-      .eq("phone", verifiedPhone)
-      .single();
-
-    if (data?.phone) {
-      redirect("/gate");
-    }
-  }
-
-  return <VerifyPhone />;
+          <p className="text-center text-sm text-[var(--text-light)] mt-6">
+            By using this service, you agree to our {" "}
+            <a href="/terms" className="text-[var(--accent-turquoise)] hover:underline">
+              Terms of Service
+            </a>
+          </p>
+        </div>
+      </div>
+    </main>
+  );
 }

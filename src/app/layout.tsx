@@ -1,23 +1,19 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Inter } from "next/font/google";
+import { Toaster } from "react-hot-toast";
+import Header from "@/components/Header";
+import { UserProvider } from "@/context/UserContext";
+import DarkModeInitializer from "@/components/DarkModeInitializer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Brentfield Gate Pass",
-  description: "Daily gate code & estate announcements",
+  title: "Brentfield Estate Gate Pass",
+  description: "Daily gate pass & estate announcements",
   manifest: "/manifest.json",
-  themeColor: "#0f172a",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
+  themeColor: "#0ea5e9",
+  viewport: "width=device-width, initial-scale=1",
 };
 
 export default function RootLayout({
@@ -26,9 +22,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full">
-      <body className={`min-h-full bg-slate-950 text-white ${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.className} bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white transition-colors`}>
+        <DarkModeInitializer />
+        <UserProvider>
+          {/* <Header /> */}
+          <main className="min-h-screen">
+            {children}
+          </main>
+          <Toaster position="top-right" />
+        </UserProvider>
       </body>
     </html>
   );
