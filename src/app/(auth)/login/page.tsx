@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Suspense } from "react";
 import toast from "react-hot-toast";
 import PhoneInput from "@/components/auth/PhoneInput";
 
@@ -11,7 +12,9 @@ export default function LoginPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
     setIsDarkMode(prefersDark);
   }, []);
 
@@ -44,7 +47,6 @@ export default function LoginPage() {
   return (
     <div className={isDarkMode ? "dark" : ""}>
       <div className="min-h-screen bg-white dark:bg-neutral-900 flex flex-col justify-center px-6 transition-colors -bg">
-
         {/* Main Content */}
         <div className="max-w-md mx-auto w-full pt-8">
           <h1 className="text-2xl font-semibold text-neutral-900 dark:text-white text-center mb-2">
@@ -53,8 +55,12 @@ export default function LoginPage() {
           <p className="text-sm text-neutral-500 dark:text-neutral-400 text-center mb-8">
             We will send a verification code to Brentfield Estate
           </p>
-
-          <PhoneInput onPhoneSubmit={handlePhoneSubmit} isLoading={isLoading} />
+          <Suspense fallback={<div>Loading search bar...</div>}>
+            <PhoneInput
+              onPhoneSubmit={handlePhoneSubmit}
+              isLoading={isLoading}
+            />
+          </Suspense>
 
           {/* Dark Mode Toggle */}
           <div className="flex justify-center mt-8 text-sm">
@@ -67,10 +73,6 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Watermark */}
-        <div className="fixed bottom-4 left-0 right-0 text-center text-xs text-neutral-400 dark:text-neutral-600">
-          Made with Visily
-        </div>
       </div>
     </div>
   );
