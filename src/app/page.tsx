@@ -1,9 +1,10 @@
 import VerifyPhone from "@/components/VerifyPhone";
+import LoginPage from "./(auth)/login/page";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-[var(--bg-primary)] py-12">
-      <div className="container flex items-center justify-center">
+      {/* <div className="container flex items-center justify-center">
         <div className="estate-bg card p-8 md:p-12 w-full max-w-md text-center">
           <VerifyPhone />
 
@@ -14,7 +15,8 @@ export default function Home() {
             </a>
           </p>
         </div>
-      </div>
+      </div> */}
+      <LoginPage />
     </main>
   );
 }

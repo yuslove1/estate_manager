@@ -43,16 +43,7 @@ export default function LoginPage() {
 
   return (
     <div className={isDarkMode ? "dark" : ""}>
-      <div className="min-h-screen bg-white dark:bg-neutral-900 flex flex-col justify-center px-6 transition-colors">
-        {/* iOS Status Bar */}
-        <div className="fixed top-0 left-0 right-0 h-7 bg-white dark:bg-neutral-900 flex items-center justify-between px-6 text-xs text-neutral-900 dark:text-white border-b border-neutral-200 dark:border-neutral-800">
-          <span>9:41</span>
-          <div className="flex gap-1">
-            <span>📶</span>
-            <span>📡</span>
-            <span>🔋</span>
-          </div>
-        </div>
+      <div className="min-h-screen bg-white dark:bg-neutral-900 flex flex-col justify-center px-6 transition-colors -bg">
 
         {/* Main Content */}
         <div className="max-w-md mx-auto w-full pt-8">
