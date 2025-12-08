@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
 import { createClient } from "@/utils/supabase/client";
 import type { Resident } from "@/utils/supabase/types";
+import type { ConfirmationResult } from "firebase/auth";
 
 interface UserContextType {
   user: Resident | null;
@@ -18,9 +19,13 @@ interface UserContextType {
   keyboardNav: boolean;
   setKeyboardNav: (enabled: boolean) => void;
   refreshUser: () => Promise<void>;
+  confirmationResult: ConfirmationResult | null;
+  setConfirmationResult: (result: ConfirmationResult | null) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
+
+const confirmationResultStore: { current: ConfirmationResult | null } = { current: null };
 
 export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<Resident | null>(null);
@@ -30,6 +35,18 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [gateNotif, setGateNotifState] = useState(true);
   const [textSize, setTextSizeState] = useState(16);
   const [keyboardNav, setKeyboardNavState] = useState(false);
+  const [confirmationResult, setConfirmationResultState] = useState<ConfirmationResult | null>(null);
+
+  const setConfirmationResult = (result: ConfirmationResult | null) => {
+    setConfirmationResultState(result);
+    confirmationResultStore.current = result;
+  };
+
+  useEffect(() => {
+    return () => {
+      confirmationResultStore.current = null;
+    };
+  }, []);
 
   const supabase = createClient();
 
@@ -51,6 +68,16 @@ export function UserProvider({ children }: { children: ReactNode }) {
     applyKeyboardNav(savedKeyboardNav);
   }, []);
 
+  const normalizePhoneNumber = (phone: string): string => {
+    let normalized = phone.replace(/\s|-/g, "");
+    if (normalized.startsWith("+234")) {
+      normalized = "0" + normalized.slice(4);
+    } else if (normalized.startsWith("234")) {
+      normalized = "0" + normalized.slice(3);
+    }
+    return normalized;
+  };
+
   const initializeUser = useCallback(async () => {
     try {
       const cookies = document.cookie.split("; ");
@@ -59,15 +86,19 @@ export function UserProvider({ children }: { children: ReactNode }) {
       );
 
       if (verifiedPhoneCookie) {
-        const phone = decodeURIComponent(verifiedPhoneCookie.split("=")[1]);
-        if (phone) {
+        const phoneFromCookie = decodeURIComponent(verifiedPhoneCookie.split("=")[1]);
+        if (phoneFromCookie) {
+          const normalizedPhone = normalizePhoneNumber(phoneFromCookie);
           const { data, error } = await supabase
             .from("residents")
             .select("*")
-            .eq("phone", phone)
+            .eq("phone", normalizedPhone)
             .single();
 
-          if (error) throw error;
+          if (error) {
+            console.error("User lookup error:", error);
+            throw error;
+          }
           if (data) setUser(data as Resident);
         }
       }
@@ -85,10 +116,11 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   const fetchUserData = async (phone: string) => {
     try {
+      const normalizedPhone = normalizePhoneNumber(phone);
       const { data, error } = await supabase
         .from("residents")
         .select("*")
-        .eq("phone", phone)
+        .eq("phone", normalizedPhone)
         .single();
 
       if (error) throw error;
@@ -169,6 +201,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
         keyboardNav,
         setKeyboardNav,
         refreshUser,
+        confirmationResult,
+        setConfirmationResult,
       }}
     >
       {children}

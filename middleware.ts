@@ -18,7 +18,7 @@ export async function middleware(request: NextRequest) {
 
   // If no verified phone → redirect to home (phone entry)
   if (!verifiedPhone) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/auth/login", request.url));
   }
 
   // Admin route protection
@@ -39,11 +39,11 @@ export async function middleware(request: NextRequest) {
 
       // If not admin → redirect to gate page
       if (!data?.is_admin || error) {
-        return NextResponse.redirect(new URL("/gate", request.url));
+        return NextResponse.redirect(new URL("/dashboard", request.url));
       }
     } catch (err) {
       console.error("Admin check failed:", err);
-      return NextResponse.redirect(new URL("/gate", request.url));
+      return NextResponse.redirect(new URL("/dashboard", request.url));
     }
   }
 
@@ -53,5 +53,5 @@ export async function middleware(request: NextRequest) {
 
 // Only run on these paths
 export const config = {
-  matcher: ["/gate", "/admin"],
+  matcher: ["/login", "/admin"],
 };

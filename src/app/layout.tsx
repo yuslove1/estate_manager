@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
-import Header from "@/components/Header";
 import { UserProvider } from "@/context/UserContext";
 import DarkModeInitializer from "@/components/DarkModeInitializer";
 
@@ -23,10 +23,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <Script
+          src="https://www.google.com/recaptcha/api.js"
+          strategy="beforeInteractive"
+        />
+      </head>
       <body className={`${inter.className} bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white transition-colors`}>
         <DarkModeInitializer />
         <UserProvider>
-          {/* <Header /> */}
           <main className="min-h-screen">
             {children}
           </main>
