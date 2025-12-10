@@ -9,7 +9,8 @@ export default function EmergencyContactsButton() {
   return (
     <button
       onClick={() => router.push("/dashboard/emergency")}
-      className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold py-4 rounded-xl transition mb-6"
+      className="w-full flex items-center justify-center gap-2 text-white font-bold py-4 rounded-xl transition mb-6 backdrop-blur-md border border-red-400"
+      style={{ background: "rgba(220, 38, 38, 0.9)" }}
     >
       <Phone size={20} />
       Emergency Contacts

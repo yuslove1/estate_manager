@@ -252,6 +252,22 @@ export default function LoginPage() {
         formattedPhone = "+234" + formattedPhone;
       }
 
+      console.log("Validating phone in database...");
+      const validationRes = await fetch("/api/auth/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: formattedPhone }),
+      });
+
+      if (!validationRes.ok) {
+        const validationData = await validationRes.json();
+        if (validationRes.status === 403) {
+          toast.error("You're not in the residential list, contact the brentfield CDA");
+          return;
+        }
+        throw new Error(validationData.error || "Validation failed");
+      }
+
       console.log("Initializing reCAPTCHA...");
       const recaptchaVerifier = await initializeRecaptcha();
 
@@ -302,19 +318,15 @@ export default function LoginPage() {
 
   return (
     <div
-      className="min-h-screen bg-cover bg-center flex flex-col justify-center items-center px-4 py-8"
-      style={{
-        backgroundImage:
-          "linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), url('/images/estate1.jpg')",
-      }}
+      className="min-h-screen bg-transparent flex flex-col justify-center items-center px-4 py-8"
     >
       <div className="mb-6">
-        <div className="bg-teal-500 rounded-3xl p-4 shadow-lg">
+        <div className="bg-teal-500 rounded-3xl p-4 shadow-lg backdrop-blur-md">
           <Shield size={56} className="text-white" />
         </div>
       </div>
 
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 space-y-8">
+      <div className="rounded-3xl w-full max-w-md p-8 space-y-8 backdrop-blur-md border border-neutral-200" style={{ background: "rgba(255, 255, 255, 0.95)" }}>
         <div className="text-center space-y-3">
           <h1 className="text-3xl font-bold">Enter your Phone Number</h1>
           <p className="text-base text-gray-600">

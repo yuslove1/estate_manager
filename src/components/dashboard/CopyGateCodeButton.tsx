@@ -15,10 +15,11 @@ export default function CopyGateCodeButton({ code }: { code: string }) {
   return (
     <button
       onClick={copy}
-      className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 rounded-xl transition mb-4"
+      className="w-full flex items-center justify-center gap-2 text-white font-bold py-4 rounded-xl transition mb-4 backdrop-blur-md border border-blue-400"
+      style={{ background: "rgba(59, 130, 246, 0.9)" }}
     >
       <Copy size={20} />
-      {copied ? "Copied!" : "Copy Gate Code"}
+      {copied ? "✓ Copied!" : "Copy Gate Code"}
     </button>
   );
 }

@@ -6,6 +6,7 @@ import EmergencyContactsButton from "@/components/dashboard/EmergencyContactsBut
 import TodayAnnouncements from "@/components/dashboard/TodayAnnouncements";
 import PWAPrompt from "@/components/dashboard/PWAPrompt";
 import TopAppBar from "@/components/dashboard/TopAppBar";
+import UrgentAnnouncementsBanner from "@/components/dashboard/UrgentAnnouncementsBanner";
 
 export const revalidate = 0;
 
@@ -41,8 +42,13 @@ export default async function DashboardPage() {
   return (
     <>
       <TopAppBar />
-      <main className="min-h-screen bg-white dark:bg-neutral-900">
-        <div className="container max-w-2xl px-4 pt-6 pb-32">
+      <main className="min-h-screen bg-transparent">
+        <div className="container max-w-2xl mx-auto px-4 pt-6 pb-32 backdrop-blur-sm min-h-screen" style={{ background: "rgba(255, 255, 255, 0.02)" }}>
+          {/* Urgent Announcements Banner */}
+          <div className="mb-6">
+            <UrgentAnnouncementsBanner />
+          </div>
+
           {/* Date Display */}
           <p className="text-center text-neutral-700 dark:text-neutral-300 font-semibold mb-6">
             {format(today, "EEEE d MMMM yyyy")}

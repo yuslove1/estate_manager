@@ -7,6 +7,16 @@ export async function middleware(request: NextRequest) {
   // Get the verified phone from cookie
   const verifiedPhone = request.cookies.get("verified_phone")?.value;
 
+  // If user is already logged in and trying to access login page, redirect to dashboard
+  if (verifiedPhone) {
+    if (
+      request.nextUrl.pathname === "/auth/login" ||
+      request.nextUrl.pathname === "/auth/verify"
+    ) {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
+  }
+
   // Public routes — allow everyone
   if (
     request.nextUrl.pathname === "/" ||
@@ -53,5 +63,5 @@ export async function middleware(request: NextRequest) {
 
 // Only run on these paths
 export const config = {
-  matcher: ["/login", "/admin"],
+  matcher: ["/", "/auth/login", "/auth/verify", "/admin", "/dashboard/:path*"],
 };

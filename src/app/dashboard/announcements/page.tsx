@@ -22,8 +22,8 @@ export default async function AnnouncementsPage() {
   return (
     <>
       <AnnouncementsTopBar />
-      <main className="min-h-screen bg-white dark:bg-neutral-900">
-        <div className="container max-w-2xl px-4 pt-6 pb-24">
+      <main className="min-h-screen bg-transparent">
+        <div className="container max-w-2xl mx-auto px-4 pt-6 backdrop-blur-sm min-h-screen" style={{ background: "rgba(255, 255, 255, 0.02)" }}>
           <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-6">
             Latest
             <br />

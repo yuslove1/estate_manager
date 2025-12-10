@@ -74,19 +74,18 @@ export default function VerifyClient() {
   if (!phone) return null;
 
   return (
-    <div className="min-h-screen bg-cover bg-center flex items-center justify-center p-4"
-      style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), url('/images/estate1.jpg')" }}>
+    <div className="min-h-screen bg-transparent flex items-center justify-center p-4">
       
-      <div className="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md text-center">
-        <h1 className="text-3xl font-bold text-blue-600 mb-4">Verify Code</h1>
-        <p className="text-gray-600 mb-8">We sent a code to {phone}</p>
+      <div className="rounded-3xl p-8 w-full max-w-md text-center backdrop-blur-md border border-neutral-200" style={{ background: "rgba(255, 255, 255, 0.95)" }}>
+        <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-4">Verify Code</h1>
+        <p className="text-gray-600 dark:text-gray-400 mb-8">We sent a code to {phone}</p>
 
         <input
           type="text"
           value={otp}
           onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
           placeholder="000000"
-          className="w-full text-5xl font-bold text-center tracking-widest bg-gray-100 py-8 rounded-2xl mb-6 focus:outline-none focus:ring-4 focus:ring-blue-500"
+          className="w-full text-5xl font-bold text-center tracking-widest bg-white border-2 border-gray-300 text-gray-900 py-8 rounded-2xl mb-6 focus:outline-none focus:ring-4 focus:ring-blue-500 placeholder-gray-400"
           maxLength={6}
         />
 
@@ -96,7 +95,7 @@ export default function VerifyClient() {
 
         <button
           onClick={() => router.push("/auth/login")}
-          className="w-full mt-3 text-sm text-blue-600 hover:underline"
+          className="w-full mt-3 text-sm text-blue-600 dark:text-blue-400 hover:underline"
         >
           Back to Phone Number
         </button>

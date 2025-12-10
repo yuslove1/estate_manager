@@ -3,8 +3,13 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 function generateCode() {
-  // 4-digit numeric code (estate standard)
-  return String(Math.floor(1000 + Math.random() * 9000));
+  // 4-character alphanumeric code (letters and numbers)
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let code = "";
+  for (let i = 0; i < 4; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
 }
 
 export async function GET() {

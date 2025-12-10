@@ -42,7 +42,7 @@ function PWAInstallSection() {
   };
 
   return (
-    <div className="bg-neutral-50 dark:bg-neutral-800 rounded-xl p-6">
+    <div className="rounded-xl p-6 backdrop-blur-md border border-neutral-200" style={{ background: "rgba(255, 255, 255, 0.85)" }}>
       <div className="flex items-start gap-3 mb-4">
         <Download size={24} className="text-blue-600 dark:text-blue-400 flex-shrink-0 mt-1" />
         <div>
@@ -79,8 +79,8 @@ export default function SettingsPage() {
   return (
     <>
       <SettingsTopBar />
-      <main className="min-h-screen bg-white dark:bg-neutral-900">
-        <div className="container max-w-2xl px-4 pt-6 pb-24">
+      <main className="min-h-screen bg-transparent">
+        <div className="container max-w-2xl mx-auto px-4 pt-6 pb-24 backdrop-blur-sm min-h-screen" style={{ background: "rgba(255, 255, 255, 0.02)" }}>
           {/* Profile Card */}
           <div className="flex items-center gap-3 mb-8">
             <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
@@ -116,7 +116,7 @@ export default function SettingsPage() {
             </h3>
 
             {/* Dark Mode */}
-            <div className="bg-neutral-50 dark:bg-neutral-800 rounded-xl p-4 mb-3 flex items-start justify-between">
+            <div className="rounded-xl p-4 mb-3 flex items-start justify-between backdrop-blur-md border border-neutral-200" style={{ background: "rgba(255, 255, 255, 0.85)" }}>
               <div className="flex items-start gap-3">
                 <Moon size={20} className="text-neutral-700 dark:text-neutral-300 mt-1 flex-shrink-0" />
                 <div>
@@ -135,7 +135,7 @@ export default function SettingsPage() {
             </div>
 
             {/* Announcements Notifications */}
-            <div className="bg-neutral-50 dark:bg-neutral-800 rounded-xl p-4 mb-3 flex items-start justify-between">
+            <div className="rounded-xl p-4 mb-3 flex items-start justify-between backdrop-blur-md border border-neutral-200" style={{ background: "rgba(255, 255, 255, 0.85)" }}>
               <div className="flex items-start gap-3">
                 <Bell size={20} className="text-neutral-700 dark:text-neutral-300 mt-1 flex-shrink-0" />
                 <div>
@@ -154,7 +154,7 @@ export default function SettingsPage() {
             </div>
 
             {/* Daily Gate Code Notifications */}
-            <div className="bg-neutral-50 dark:bg-neutral-800 rounded-xl p-4 flex items-start justify-between">
+            <div className="rounded-xl p-4 flex items-start justify-between backdrop-blur-md border border-neutral-200" style={{ background: "rgba(255, 255, 255, 0.85)" }}>
               <div className="flex items-start gap-3">
                 <Bell size={20} className="text-neutral-700 dark:text-neutral-300 mt-1 flex-shrink-0" />
                 <div>
@@ -189,7 +189,7 @@ export default function SettingsPage() {
             </h3>
 
             {/* Text Size */}
-            <div className="bg-neutral-50 dark:bg-neutral-800 rounded-xl p-4 mb-3">
+            <div className="rounded-xl p-4 mb-3 backdrop-blur-md border border-neutral-200" style={{ background: "rgba(255, 255, 255, 0.85)" }}>
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
                   <Accessibility size={20} className="text-neutral-700 dark:text-neutral-300 flex-shrink-0" />
@@ -219,7 +219,7 @@ export default function SettingsPage() {
             </div>
 
             {/* Keyboard Navigation */}
-            <div className="bg-neutral-50 dark:bg-neutral-800 rounded-xl p-4 flex items-start justify-between">
+            <div className="rounded-xl p-4 flex items-start justify-between backdrop-blur-md border border-neutral-200" style={{ background: "rgba(255, 255, 255, 0.85)" }}>
               <div className="flex items-start gap-3">
                 <Accessibility size={20} className="text-neutral-700 dark:text-neutral-300 mt-1 flex-shrink-0" />
                 <div>
@@ -244,7 +244,7 @@ export default function SettingsPage() {
               Estate Management
             </h3>
 
-            <button className="w-full bg-neutral-50 dark:bg-neutral-800 rounded-xl p-4 flex items-center justify-between hover:bg-neutral-100 dark:hover:bg-neutral-700 transition">
+            <button className="w-full rounded-xl p-4 flex items-center justify-between transition backdrop-blur-md border border-neutral-200 hover:border-neutral-300" style={{ background: "rgba(255, 255, 255, 0.85)" }}>
               <div className="flex items-center gap-3">
                 <Images size={20} className="text-neutral-700 dark:text-neutral-300 flex-shrink-0" />
                 <h4 className="font-bold text-neutral-900 dark:text-white">

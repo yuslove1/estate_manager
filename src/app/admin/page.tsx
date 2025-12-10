@@ -31,6 +31,7 @@ export default function AdminPanel() {
   // Form states
   const [annTitle, setAnnTitle] = useState("");
   const [annMsg, setAnnMsg] = useState("");
+  const [annIsImportant, setAnnIsImportant] = useState(false);
 
   const loadData = useCallback(async () => {
     const today = new Date().toISOString().slice(0, 10);
@@ -49,7 +50,7 @@ export default function AdminPanel() {
     setAnnouncements(ann.data ?? []);
     setTodayCode(codeRes.data?.code ?? "");
     setCurrentPage(1);
-  }, [supabase]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Load once on mount
   useEffect(() => {
@@ -123,18 +124,19 @@ export default function AdminPanel() {
     await supabase.from("announcements").insert({
       title: annTitle.trim(),
       message: annMsg.trim(),
-      is_important: false,
+      is_important: annIsImportant,
     });
     setAnnTitle("");
     setAnnMsg("");
+    setAnnIsImportant(false);
     loadData();
   };
 
   return (
     <>
       <AdminTopBar />
-      <div className="min-h-screen bg-white dark:bg-neutral-900 pb-12">
-        <div className="container max-w-7xl px-4 pt-6 pb-8">
+      <div className="min-h-screen bg-transparent pb-12">
+        <div className="container max-w-7xl mx-auto px-4 pt-6 pb-8 backdrop-blur-sm min-h-screen" style={{ background: "rgba(255, 255, 255, 0.02)" }}>
           {/* <div className="grid grid-cols-1 md:grid-cols-4 gap-6"> */}
           <div className="">
             {/* nav buttons */}
@@ -263,18 +265,30 @@ export default function AdminPanel() {
                             <td className="px-6 py-4 text-sm text-neutral-900 dark:text-white">{r.full_name}</td>
                             <td className="px-6 py-4 text-sm text-neutral-900 dark:text-white">{r.house_number}</td>
                             <td className="px-6 py-4 text-center">
-                              <button
-                                onClick={() => toggleAdmin(r.id, r.is_admin)}
-                                className={`relative w-10 h-6 rounded-full transition-colors ${
-                                  r.is_admin ? "bg-blue-500" : "bg-neutral-300 dark:bg-neutral-600"
-                                }`}
-                              >
-                                <div
-                                  className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${
-                                    r.is_admin ? "translate-x-5" : "translate-x-0.5"
+                              {user?.is_admin && (
+                                <button
+                                  onClick={() => toggleAdmin(r.id, r.is_admin)}
+                                  className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg font-semibold transition ${
+                                    r.is_admin
+                                      ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border border-blue-300 dark:border-blue-700"
+                                      : "bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-400 border border-neutral-300 dark:border-neutral-600"
                                   }`}
-                                />
-                              </button>
+                                  title={r.is_admin ? "Admin - Click to revoke" : "Regular resident - Click to promote"}
+                                >
+                                  <Shield size={16} />
+                                  {r.is_admin ? "Admin" : "Resident"}
+                                </button>
+                              )}
+                              {!user?.is_admin && (
+                                <span className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg font-semibold text-sm ${
+                                  r.is_admin
+                                    ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"
+                                    : "bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-400"
+                                }`}>
+                                  {r.is_admin && <Shield size={16} />}
+                                  {r.is_admin ? "Admin" : "Resident"}
+                                </span>
+                              )}
                             </td>
                             <td className="px-6 py-4 text-center">
                               <button
@@ -339,6 +353,18 @@ export default function AdminPanel() {
                         rows={4}
                         className="w-full p-4 rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-500 dark:placeholder-neutral-400 resize-none"
                       />
+                      <div className="flex items-center gap-3 p-3 bg-white dark:bg-neutral-700 rounded-lg border border-neutral-300 dark:border-neutral-600">
+                        <input
+                          type="checkbox"
+                          id="isImportant"
+                          checked={annIsImportant}
+                          onChange={(e) => setAnnIsImportant(e.target.checked)}
+                          className="w-5 h-5 rounded border-neutral-300 dark:border-neutral-600 cursor-pointer"
+                        />
+                        <label htmlFor="isImportant" className="flex-1 cursor-pointer font-semibold text-neutral-900 dark:text-white">
+                          Mark as Urgent/Important
+                        </label>
+                      </div>
                     </div>
                     <Button
                       onClick={postAnnouncement}
@@ -355,9 +381,18 @@ export default function AdminPanel() {
                     ) : (
                       <div className="space-y-3">
                         {announcements.slice(0, 10).map((a) => (
-                          <div key={a.id} className="bg-white dark:bg-neutral-800 rounded-lg p-4 border border-neutral-200 dark:border-neutral-700">
-                            <p className="font-bold text-neutral-900 dark:text-white">{a.title}</p>
-                            <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">{a.message}</p>
+                          <div key={a.id} className={`rounded-lg p-4 border ${a.is_important ? "bg-red-50 dark:bg-red-900/20 border-red-300 dark:border-red-700" : "bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700"}`}>
+                            <div className="flex items-start justify-between gap-3">
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2">
+                                  <p className="font-bold text-neutral-900 dark:text-white">{a.title}</p>
+                                  {a.is_important && (
+                                    <span className="px-2 py-0.5 bg-red-600 text-white text-xs font-bold rounded">URGENT</span>
+                                  )}
+                                </div>
+                                <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">{a.message}</p>
+                              </div>
+                            </div>
                           </div>
                         ))}
                       </div>

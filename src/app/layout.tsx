@@ -4,7 +4,6 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { UserProvider } from "@/context/UserContext";
-import DarkModeInitializer from "@/components/DarkModeInitializer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,10 +28,9 @@ export default function RootLayout({
           strategy="beforeInteractive"
         />
       </head>
-      <body className={`${inter.className} bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white transition-colors`}>
-        <DarkModeInitializer />
+      <body className={`${inter.className} text-neutral-900 dark:text-white transition-colors duration-300`} style={{ backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", minHeight: "100vh" }}>
         <UserProvider>
-          <main className="min-h-screen">
+          <main className="min-h-screen bg-transparent">
             {children}
           </main>
           <Toaster position="top-right" />

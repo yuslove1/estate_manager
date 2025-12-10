@@ -7,7 +7,7 @@ export default function TopAppBar() {
   const router = useRouter();
 
   return (
-    <div className="bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 sticky top-0 z-40">
+    <div className="sticky top-0 z-40 backdrop-blur-md border-b dark:bg-neutral-900/80 dark:border-neutral-800/50" style={{ background: "rgba(255, 255, 255, 0.9)", borderColor: "rgba(229, 231, 235, 0.5)" }}>
       <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
         <div className="bg-blue-500 rounded-lg p-2">
           <Shield size={28} className="text-white" />
