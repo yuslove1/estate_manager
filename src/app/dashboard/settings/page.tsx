@@ -94,8 +94,8 @@ export default function SettingsPage() {
   return (
     <>
       <SettingsTopBar />
-      <main className="min-h-screen bg-transparent">
-        <div className="container max-w-2xl mx-auto px-4 pt-6 pb-24 backdrop-blur-sm min-h-screen" style={{ background: "rgba(255, 255, 255, 0.02)" }}>
+      <main className="bg-transparent">
+        <div className="min-h-screen container max-w-2xl mx-auto px-4 pt-6 pb-24">
           {/* Profile Card */}
           <div className="flex items-center gap-3 mb-8">
             <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">

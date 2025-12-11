@@ -135,8 +135,8 @@ export default function AdminPanel() {
   return (
     <>
       <AdminTopBar />
-      <div className="min-h-screen bg-transparent pb-12">
-        <div className="container max-w-7xl mx-auto px-4 pt-6 pb-8 backdrop-blur-sm min-h-screen" style={{ background: "rgba(255, 255, 255, 0.02)" }}>
+      <div className="bg-transparent pb-12">
+        <div className="min-h-screen container max-w-7xl mx-auto px-4 pt-6 pb-8">
           {/* <div className="grid grid-cols-1 md:grid-cols-4 gap-6"> */}
           <div className="">
             {/* nav buttons */}

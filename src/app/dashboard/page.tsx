@@ -42,8 +42,8 @@ export default async function DashboardPage() {
   return (
     <>
       <TopAppBar />
-      <main className="min-h-screen bg-transparent">
-        <div className="container max-w-2xl mx-auto px-4 pt-6 pb-32 backdrop-blur-xs min-h-screen" style={{ background: "rgba(255, 255, 255, 0.02)" }}>
+      <main className="bg-transparent">
+        <div className="min-h-screen container max-w-2xl mx-auto px-4 pt-6 pb-32">
           {/* Urgent Announcements Banner */}
           <div className="mb-6">
             <UrgentAnnouncementsBanner />

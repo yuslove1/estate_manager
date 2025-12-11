@@ -103,7 +103,7 @@ export default function AnnouncementsClient({ announcements }: AnnouncementsClie
           onClick={() => setSelectedAnnouncement(null)}
         >
           <div
-            className="bg-white dark:bg-neutral-800 rounded-t-3xl sm:rounded-2xl w-full sm:w-full sm:max-w-md max-h-[90vh] sm:max-h-[85vh] overflow-y-auto p-6"
+            className="bg-white dark:bg-neutral-800 rounded-t-3xl sm:rounded-2xl w-full sm:w-full sm:max-w-md max-h-[85vh] overflow-y-auto p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-start mb-4">

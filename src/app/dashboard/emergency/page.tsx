@@ -119,8 +119,8 @@ export default function EmergencyContactsPage() {
   };
 
   return (
-    <main className="min-h-screen bg-transparent">
-      <div className="container max-w-2xl mx-auto px-4 pt-6 pb-24 backdrop-blur-sm min-h-screen" style={{ background: "rgba(255, 255, 255, 0.02)" }}>
+    <main className="bg-transparent">
+      <div className="min-h-screen container max-w-2xl mx-auto px-4 pt-6 pb-24">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <button
@@ -194,58 +194,55 @@ export default function EmergencyContactsPage() {
           </div>
         )}
 
-        {/* Contacts Table */}
+        {/* Contacts Grid */}
         {loading ? (
           <div className="text-center py-12">
             <p className="text-neutral-600 dark:text-neutral-400">Loading contacts...</p>
           </div>
         ) : contacts.length === 0 ? (
-          <div className="rounded-xl p-12 text-center backdrop-blur-md border border-neutral-200" style={{ background: "rgba(255, 255, 255, 0.85)" }}>
+          <div className="rounded-xl p-12 text-center">
             <Phone size={48} className="mx-auto text-neutral-400 mb-4" />
-            <p className="text-neutral-600 text-lg">No emergency contacts yet</p>
+            <p className="text-neutral-600 dark:text-neutral-400 text-lg">No emergency contacts yet</p>
             {user?.is_admin && (
-              <p className="text-sm text-neutral-500 mt-2">Add the first contact using the button above</p>
+              <p className="text-sm text-neutral-500 dark:text-neutral-500 mt-2">Add the first contact using the button above</p>
             )}
           </div>
         ) : (
-          <div className="rounded-lg border overflow-hidden backdrop-blur-md" style={{ background: "rgba(255, 255, 255, 0.9)", borderColor: "rgba(229, 231, 235, 0.8)" }}>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-neutral-50 dark:bg-neutral-700">
-                  <tr>
-                    <th className="px-6 py-4 text-left text-sm font-bold text-neutral-900 dark:text-white">Name</th>
-                    <th className="px-6 py-4 text-left text-sm font-bold text-neutral-900 dark:text-white">Phone</th>
-                    <th className="px-6 py-4 text-left text-sm font-bold text-neutral-900 dark:text-white">Title</th>
-                    {user?.is_admin && (
-                      <th className="px-6 py-4 text-center text-sm font-bold text-neutral-900 dark:text-white">Action</th>
-                    )}
-                  </tr>
-                </thead>
-                <tbody>
-                  {contacts.map((contact) => (
-                    <tr key={contact.id} className="border-t border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-700/50 transition">
-                      <td className="px-6 py-4 text-sm font-semibold text-neutral-900 dark:text-white">{contact.name}</td>
-                      <td className="px-6 py-4 text-sm text-neutral-600 dark:text-neutral-400">
-                        <a href={`tel:${contact.phone}`} className="text-blue-600 dark:text-blue-400 hover:underline">
-                          {contact.phone}
-                        </a>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-neutral-600 dark:text-neutral-400">{contact.title || "—"}</td>
-                      {user?.is_admin && (
-                        <td className="px-6 py-4 text-center">
-                          <button
-                            onClick={() => handleDeleteContact(contact.id)}
-                            className="inline-flex items-center justify-center w-8 h-8 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/30 dark:text-red-400 rounded-lg transition"
-                          >
-                            <Trash2 size={18} />
-                          </button>
-                        </td>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {contacts.map((contact) => (
+              <div key={contact.id} className="relative group">
+                <button
+                  onClick={() => window.location.href = `tel:${contact.phone}`}
+                  className="w-full p-6 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 hover:shadow-lg hover:border-red-400 dark:hover:border-red-500 transition text-left"
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-1">
+                        {contact.name}
+                      </h3>
+                      {contact.title && (
+                        <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">
+                          {contact.title}
+                        </p>
                       )}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                      <div className="flex items-center gap-2 text-red-600 dark:text-red-400 font-semibold">
+                        <Phone size={18} />
+                        <span>{contact.phone}</span>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+                {user?.is_admin && (
+                  <button
+                    onClick={() => handleDeleteContact(contact.id)}
+                    className="absolute top-2 right-2 p-2 text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50 transition opacity-0 group-hover:opacity-100"
+                    title="Delete contact"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                )}
+              </div>
+            ))}
           </div>
         )}
       </div>
