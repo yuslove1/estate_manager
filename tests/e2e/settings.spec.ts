@@ -165,4 +165,20 @@ test.describe("Settings Page", () => {
     const isVisible = await houseText.isVisible();
     expect(typeof isVisible).toBe("boolean");
   });
+
+  test("logout button should be visible and functional", async () => {
+    const logoutButton = page.locator("button").filter({ hasText: "Logout" }).first();
+    
+    await expect(logoutButton).toBeVisible();
+
+    await page.evaluate(() => {
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+
+    await logoutButton.click();
+    await page.waitForTimeout(500);
+
+    const currentUrl = page.url();
+    expect(currentUrl).toContain("/auth/login");
+  });
 });
