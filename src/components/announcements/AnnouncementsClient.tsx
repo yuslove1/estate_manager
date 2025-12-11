@@ -22,12 +22,24 @@ export default function AnnouncementsClient({ announcements }: AnnouncementsClie
   useEffect(() => {
     if (selectedAnnouncement) {
       document.body.style.overflow = "hidden";
+      const bottomNav = document.querySelector('nav[role="navigation"]');
+      if (bottomNav) {
+        (bottomNav as HTMLElement).style.display = "none";
+      }
     } else {
       document.body.style.overflow = "unset";
+      const bottomNav = document.querySelector('nav[role="navigation"]');
+      if (bottomNav) {
+        (bottomNav as HTMLElement).style.display = "";
+      }
     }
 
     return () => {
       document.body.style.overflow = "unset";
+      const bottomNav = document.querySelector('nav[role="navigation"]');
+      if (bottomNav) {
+        (bottomNav as HTMLElement).style.display = "";
+      }
     };
   }, [selectedAnnouncement]);
 
@@ -87,11 +99,11 @@ export default function AnnouncementsClient({ announcements }: AnnouncementsClie
       {/* Announcement Detail Modal */}
       {selectedAnnouncement && (
         <div
-          className="fixed inset-0 bg-black/50 z-50"
+          className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center"
           onClick={() => setSelectedAnnouncement(null)}
         >
           <div
-            className="fixed bottom-0 left-0 right-0 bg-white dark:bg-neutral-800 rounded-t-3xl sm:rounded-2xl sm:bottom-auto sm:left-1/2 sm:right-auto sm:top-1/2 sm:w-full sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 max-h-[75vh] sm:max-h-[85vh] overflow-y-auto p-6"
+            className="bg-white dark:bg-neutral-800 rounded-t-3xl sm:rounded-2xl w-full sm:w-full sm:max-w-md max-h-[90vh] sm:max-h-[85vh] overflow-y-auto p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-start mb-4">
@@ -100,7 +112,7 @@ export default function AnnouncementsClient({ announcements }: AnnouncementsClie
               </h2>
               <button
                 onClick={() => setSelectedAnnouncement(null)}
-                className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white flex-shrink-0"
+                className="text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-300 flex-shrink-0"
               >
                 <X size={24} />
               </button>
@@ -117,7 +129,7 @@ export default function AnnouncementsClient({ announcements }: AnnouncementsClie
               })}
             </p>
 
-            <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed">
+            <p className="text-neutral-700 dark:text-neutral-200 leading-relaxed">
               {selectedAnnouncement.message}
             </p>
           </div>
