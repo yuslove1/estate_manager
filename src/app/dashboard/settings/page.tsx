@@ -1,7 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { User, Moon, Bell, Accessibility, Images, ChevronRight, Shield, Download } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { User, Moon, Bell, Accessibility, Images, ChevronRight, Shield, Download, LogOut } from "lucide-react";
+import { deleteCookie } from "cookies-next";
+import toast from "react-hot-toast";
 import SettingsTopBar from "@/components/settings/SettingsTopBar";
 import Toggle from "@/components/settings/Toggle";
 import { useUser } from "@/context/UserContext";
@@ -74,7 +77,19 @@ function PWAInstallSection() {
 }
 
 export default function SettingsPage() {
+  const router = useRouter();
   const { user, darkMode, setDarkMode, annNotif, setAnnNotif, gateNotif, setGateNotif, textSize, setTextSize, keyboardNav, setKeyboardNav } = useUser();
+
+  const handleLogout = () => {
+    try {
+      deleteCookie("verified_phone");
+      toast.success("Logged out successfully");
+      router.replace("/auth/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Error logging out");
+    }
+  };
 
   return (
     <>
@@ -239,7 +254,7 @@ export default function SettingsPage() {
           </div>
 
           {/* ESTATE MANAGEMENT Section */}
-          <div>
+          <div className="mb-8">
             <h3 className="text-xs font-bold uppercase text-neutral-500 dark:text-neutral-400 mb-4 tracking-wide">
               Estate Management
             </h3>
@@ -252,6 +267,22 @@ export default function SettingsPage() {
                 </h4>
               </div>
               <ChevronRight size={20} className="text-neutral-400 dark:text-neutral-600 flex-shrink-0" />
+            </button>
+          </div>
+
+          {/* ACCOUNT Section */}
+          <div>
+            <h3 className="text-xs font-bold uppercase text-neutral-500 dark:text-neutral-400 mb-4 tracking-wide">
+              Account
+            </h3>
+
+            <button
+              onClick={handleLogout}
+              className="w-full rounded-xl p-4 flex items-center gap-3 transition backdrop-blur-md border border-red-200 dark:border-red-900 hover:bg-red-50 dark:hover:bg-red-950/30 text-red-600 dark:text-red-400"
+              style={{ background: "rgba(255, 255, 255, 0.85)" }}
+            >
+              <LogOut size={20} className="flex-shrink-0" />
+              <h4 className="font-bold">Logout</h4>
             </button>
           </div>
         </div>
