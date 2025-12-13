@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { Shield } from "lucide-react";
 import PhoneInputField from "@/components/auth/PhoneInputField";
 import Image from "next/image";
 import { auth } from "@/utils/firebase/config";
@@ -149,9 +148,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-transparent flex flex-col justify-center items-center px-4 py-8">
       <div className="mb-6">
-        <div className="bg-teal-500 rounded-3xl p-4 shadow-lg backdrop-blur-md">
-          <Shield size={56} className="text-white" />
-        </div>
+        <Image src="/images/Logo.png" alt="Brentfield Estate Logo" width={100} height={100} className="rounded-2xl shadow-lg" />
       </div>
 
       <div className="rounded-3xl w-full max-w-md p-8 space-y-8 backdrop-blur-md border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 transition-colors">

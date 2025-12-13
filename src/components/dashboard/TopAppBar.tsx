@@ -1,7 +1,8 @@
 "use client";
 
-import { Shield, Lock } from "lucide-react";
+import { Lock } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function TopAppBar() {
   const router = useRouter();
@@ -9,9 +10,7 @@ export default function TopAppBar() {
   return (
     <div className="sticky top-0 z-40 backdrop-blur-md border-b dark:bg-neutral-900/80 dark:border-neutral-800/50" style={{ background: "rgba(255, 255, 255, 0.9)", borderColor: "rgba(229, 231, 235, 0.5)" }}>
       <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
-        <div className="bg-blue-500 rounded-lg p-2">
-          <Shield size={28} className="text-white" />
-        </div>
+        <Image src="/images/NavLogo.png" alt="Brentfield Estate" width={40} height={40} className="rounded-lg" />
 
         <button
           onClick={() => router.push("/admin")}

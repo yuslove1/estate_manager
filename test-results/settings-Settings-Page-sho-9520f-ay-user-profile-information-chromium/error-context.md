@@ -1,0 +1,96 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - button "Go back" [ref=e7]:
+            - img [ref=e8]
+          - heading "Settings" [level=1] [ref=e10]
+        - button [ref=e11]:
+          - img [ref=e12]
+      - main [ref=e15]:
+        - generic [ref=e16]:
+          - generic [ref=e17]:
+            - img [ref=e19]
+            - generic [ref=e22]:
+              - heading "Brentfield Resident" [level=2] [ref=e23]
+              - paragraph [ref=e25]: Not available
+          - generic [ref=e26]:
+            - heading "Preferences" [level=3] [ref=e27]
+            - generic [ref=e28]:
+              - generic [ref=e29]:
+                - img [ref=e30]
+                - generic [ref=e32]:
+                  - heading "Dark Mode" [level=4] [ref=e33]
+                  - paragraph [ref=e34]: Toggle between light and dark themes.
+              - switch [ref=e35]
+            - generic [ref=e37]:
+              - generic [ref=e38]:
+                - img [ref=e39]
+                - generic [ref=e42]:
+                  - heading "Announcements" [level=4] [ref=e43]
+                  - paragraph [ref=e44]: Receive alerts for new estate announcements.
+              - switch [checked] [ref=e45]
+            - generic [ref=e47]:
+              - generic [ref=e48]:
+                - img [ref=e49]
+                - generic [ref=e52]:
+                  - heading "Daily Gate Code" [level=4] [ref=e53]
+                  - paragraph [ref=e54]: Get a notification for the new daily gate code.
+              - switch [checked] [ref=e55]
+          - generic [ref=e57]:
+            - heading "Progressive Web App (PWA)" [level=3] [ref=e58]
+            - generic [ref=e59]:
+              - generic [ref=e60]:
+                - img [ref=e61]
+                - generic [ref=e64]:
+                  - heading "Add Brentfield to Home Screen" [level=4] [ref=e65]
+                  - paragraph [ref=e66]: Install the Brentfield Estate Gate Pass App for quick access and offline functionality.
+              - button "Available on supported browsers" [disabled] [ref=e67]
+          - generic [ref=e68]:
+            - heading "Accessibility" [level=3] [ref=e69]
+            - generic [ref=e70]:
+              - generic [ref=e72]:
+                - img [ref=e73]
+                - generic [ref=e79]:
+                  - heading "Text Size" [level=4] [ref=e80]
+                  - paragraph [ref=e81]: Adjust font size for better readability.
+              - generic [ref=e82]:
+                - slider [ref=e83] [cursor=pointer]: "16"
+                - generic [ref=e84]: 16px
+            - generic [ref=e85]:
+              - generic [ref=e86]:
+                - img [ref=e87]
+                - generic [ref=e93]:
+                  - heading "Keyboard Navigation" [level=4] [ref=e94]
+                  - paragraph [ref=e95]: Enable enhanced keyboard controls for easier navigation.
+              - switch [ref=e96]
+          - generic [ref=e98]:
+            - heading "Estate Management" [level=3] [ref=e99]
+            - button "Manage Estate Photos" [ref=e100]:
+              - generic [ref=e101]:
+                - img [ref=e102]
+                - heading "Manage Estate Photos" [level=4] [ref=e107]
+              - img [ref=e108]
+          - generic [ref=e110]:
+            - heading "Account" [level=3] [ref=e111]
+            - button "Logout" [ref=e112]:
+              - img [ref=e113]
+              - heading "Logout" [level=4] [ref=e116]
+      - navigation [ref=e117]:
+        - button "Home" [ref=e118]:
+          - img [ref=e119]
+          - generic [ref=e122]: Home
+        - button "Announcements" [ref=e123]:
+          - img [ref=e124]
+          - generic [ref=e127]: Announcements
+        - button "Settings" [ref=e128]:
+          - img [ref=e129]
+          - generic [ref=e132]: Settings
+  - button "Open Next.js Dev Tools" [ref=e138] [cursor=pointer]:
+    - img [ref=e139]
+  - alert [ref=e142]
+```

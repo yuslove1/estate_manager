@@ -1,0 +1,86 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e5]:
+      - button "Go back" [ref=e6]:
+        - img [ref=e7]
+      - heading "Admin Dashboard" [level=1] [ref=e9]
+    - generic [ref=e12]:
+      - generic [ref=e13]:
+        - button "Residents" [ref=e14]:
+          - img [ref=e15]
+          - generic [ref=e20]: Residents
+        - button "Announcements" [ref=e21]:
+          - img [ref=e22]
+          - generic [ref=e25]: Announcements
+        - button "Gate Code" [ref=e26]:
+          - img [ref=e27]
+          - generic [ref=e31]: Gate Code
+        - button "Settings" [ref=e32]:
+          - img [ref=e33]
+          - generic [ref=e36]: Settings
+      - generic [ref=e38]:
+        - generic [ref=e39]:
+          - heading "Manage Residents" [level=2] [ref=e40]
+          - paragraph [ref=e41]: View, update, or remove estate residents.
+        - button "Add Resident" [ref=e42]:
+          - img [ref=e43]
+          - text: Add Resident
+        - generic [ref=e44]:
+          - img [ref=e45]
+          - textbox "Search by name..." [ref=e48]
+        - table [ref=e50]:
+          - rowgroup [ref=e51]:
+            - row "Phone Name House Admin Actions" [ref=e52]:
+              - columnheader "Phone" [ref=e53]
+              - columnheader "Name" [ref=e54]
+              - columnheader "House" [ref=e55]
+              - columnheader "Admin" [ref=e56]
+              - columnheader "Actions" [ref=e57]
+          - rowgroup [ref=e58]:
+            - row "07086471602 Adedayo 3 Resident" [ref=e59]:
+              - cell "07086471602" [ref=e60]
+              - cell "Adedayo" [ref=e61]
+              - cell "3" [ref=e62]
+              - cell "Resident" [ref=e63]:
+                - generic [ref=e64]: Resident
+              - cell [ref=e65]:
+                - button [ref=e66]:
+                  - img [ref=e67]
+            - row "09066276980 Mr. Hammed No 2 Resident" [ref=e70]:
+              - cell "09066276980" [ref=e71]
+              - cell "Mr. Hammed" [ref=e72]
+              - cell "No 2" [ref=e73]
+              - cell "Resident" [ref=e74]:
+                - generic [ref=e75]: Resident
+              - cell [ref=e76]:
+                - button [ref=e77]:
+                  - img [ref=e78]
+            - row "08065704656 O'Bright 5 Admin" [ref=e81]:
+              - cell "08065704656" [ref=e82]
+              - cell "O'Bright" [ref=e83]
+              - cell "5" [ref=e84]
+              - cell "Admin" [ref=e85]:
+                - generic [ref=e86]:
+                  - img [ref=e87]
+                  - text: Admin
+              - cell [ref=e89]:
+                - button [ref=e90]:
+                  - img [ref=e91]
+            - row "07061926019 Yusuf Adesina 2 Admin" [ref=e94]:
+              - cell "07061926019" [ref=e95]
+              - cell "Yusuf Adesina" [ref=e96]
+              - cell "2" [ref=e97]
+              - cell "Admin" [ref=e98]:
+                - generic [ref=e99]:
+                  - img [ref=e100]
+                  - text: Admin
+              - cell [ref=e102]:
+                - button [ref=e103]:
+                  - img [ref=e104]
+  - button "Open Next.js Dev Tools" [ref=e112] [cursor=pointer]:
+    - img [ref=e113]
+  - alert [ref=e116]
+```
