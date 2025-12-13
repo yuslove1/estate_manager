@@ -70,7 +70,7 @@ export default function RootLayout({
           <main className="relative z-10 min-h-screen bg-transparent">
             {children}
           </main>
-          <Toaster position="top-right" />
+          <Toaster position="bottom-center" />
         </UserProvider>
       </body>
     </html>
