@@ -20,6 +20,8 @@ export async function middleware(request: NextRequest) {
   // Public routes — allow everyone
   if (
     request.nextUrl.pathname === "/" ||
+    request.nextUrl.pathname === "/auth/login" ||
+    request.nextUrl.pathname === "/auth/verify" ||
     request.nextUrl.pathname.startsWith("/_next") ||
     request.nextUrl.pathname.startsWith("/favicon.ico")
   ) {
