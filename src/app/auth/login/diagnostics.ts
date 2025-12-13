@@ -1,4 +1,6 @@
 export function checkFirebaseConfig() {
+  if (process.env.NODE_ENV !== 'development') return;
+
   const config = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY ? '✓' : '✗ MISSING',
     authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN ? '✓' : '✗ MISSING',
@@ -19,7 +21,7 @@ export function checkFirebaseConfig() {
 }
 
 export function checkDomainWhitelist() {
-  if (typeof window === 'undefined') return;
+  if (process.env.NODE_ENV !== 'development' || typeof window === 'undefined') return;
   
   const hostname = window.location.hostname;
   const protocol = window.location.protocol;
