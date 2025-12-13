@@ -264,29 +264,25 @@ export default function AdminPanel() {
                             <td className="px-6 py-4 text-sm text-neutral-900 dark:text-white font-medium">{r.phone}</td>
                             <td className="px-6 py-4 text-sm text-neutral-900 dark:text-white">{r.full_name}</td>
                             <td className="px-6 py-4 text-sm text-neutral-900 dark:text-white">{r.house_number}</td>
-                            <td className="px-6 py-4 text-center">
-                              {user?.is_admin && (
-                                <button
-                                  onClick={() => toggleAdmin(r.id, r.is_admin)}
-                                  className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg font-semibold transition ${
-                                    r.is_admin
-                                      ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border border-blue-300 dark:border-blue-700"
-                                      : "bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-400 border border-neutral-300 dark:border-neutral-600"
-                                  }`}
-                                  title={r.is_admin ? "Admin - Click to revoke" : "Regular resident - Click to promote"}
-                                >
-                                  <Shield size={16} />
-                                  {r.is_admin ? "Admin" : "Resident"}
-                                </button>
-                              )}
-                              {!user?.is_admin && (
+                            <td className="px-6 py-4 text-center flex items-center justify-center">
+                              {user?.is_admin ? (
+                                <div className="flex items-center gap-3">
+                                  <Toggle
+                                    checked={r.is_admin}
+                                    onChange={() => toggleAdmin(r.id, r.is_admin)}
+                                  />
+                                  <span className="text-xs font-medium text-neutral-600 dark:text-neutral-400">
+                                    {r.is_admin ? "Admin" : "User"}
+                                  </span>
+                                </div>
+                              ) : (
                                 <span className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg font-semibold text-sm ${
                                   r.is_admin
-                                    ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"
-                                    : "bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-400"
+                                    ? "text-blue-700 dark:text-blue-400"
+                                    : "text-neutral-600 dark:text-neutral-400"
                                 }`}>
                                   {r.is_admin && <Shield size={16} />}
-                                  {r.is_admin ? "Admin" : "Resident"}
+                                  {r.is_admin ? "Admin" : "User"}
                                 </span>
                               )}
                             </td>

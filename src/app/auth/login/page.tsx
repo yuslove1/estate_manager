@@ -14,7 +14,8 @@ export default function LoginPage() {
   const [phone, setPhone] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { setConfirmationResult, darkMode, setDarkMode, user, loading } = useUser();
+  const { setConfirmationResult, darkMode, setDarkMode, user, loading } =
+    useUser();
   const recaptchaVerifierRef = useRef<RecaptchaVerifier | null>(null);
 
   useEffect(() => {
@@ -66,7 +67,9 @@ export default function LoginPage() {
       return verifier;
     } catch {
       recaptchaVerifierRef.current = null;
-      throw new Error("Failed to initialize reCAPTCHA. Ensure reCAPTCHA script is loaded.");
+      throw new Error(
+        "Failed to initialize reCAPTCHA. Ensure reCAPTCHA script is loaded."
+      );
     }
   };
 
@@ -98,7 +101,9 @@ export default function LoginPage() {
       if (!validationRes.ok) {
         const validationData = await validationRes.json();
         if (validationRes.status === 403) {
-          toast.error("You're not in the residential list, contact the brentfield CDA");
+          toast.error(
+            "You're not in the residential list, contact the brentfield CDA"
+          );
           return;
         }
         throw new Error(validationData.error || "Validation failed");
@@ -122,7 +127,7 @@ export default function LoginPage() {
       recaptchaVerifierRef.current = null;
 
       let msg = "Failed to send OTP";
-      
+
       if (error?.code === "auth/invalid-app-credential") {
         msg = "Phone Auth not configured. Contact support.";
       } else if (error?.code === "auth/invalid-phone-number") {
@@ -147,13 +152,19 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-transparent flex flex-col justify-center items-center px-4 py-8">
-      <div className="mb-6">
-        <Image src="/images/Logo.png" alt="Brentfield Estate Logo" width={160} height={160} className="rounded-2xl shadow-lg" />
+      <div className="mb-6 max-w-40 wax-h-40">
+        <img
+          src="/images/Logo.png"
+          alt="Brentfield Estate Logo"
+          className="rounded-2xl w-full h-full object-contain"
+        />
       </div>
 
       <div className="rounded-3xl w-full max-w-md p-8 space-y-8 backdrop-blur-md border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 transition-colors">
         <div className="text-center space-y-3">
-          <h1 className="text-3xl font-bold text-neutral-900 dark:text-white">Enter your Phone Number</h1>
+          <h1 className="text-3xl font-bold text-neutral-900 dark:text-white">
+            Enter your Phone Number
+          </h1>
           <p className="text-base text-neutral-600 dark:text-neutral-400">
             We will send a verification code to your phone.
           </p>
@@ -173,14 +184,34 @@ export default function LoginPage() {
         </button>
       </div>
 
-      <div className="mt-16 text-center space-y-6 w-full max-w-md">
+      <div className="mt-16 text-center space-y-6 w-full max-w-md bg-blend-darken">
         <p className="text-neutral-800 dark:text-neutral-200 font-semibold text-lg">
           Welcome to Brentfield Estate
         </p>
         <div className="flex justify-center gap-6">
-          <Image src="/images/appIcon1.png" alt="Estate" width={80} height={80} className="rounded-xl shadow-md" />
-          <Image src="/images/appIcon2.png" alt="Estate" width={80} height={80} className="rounded-xl shadow-md" />
-          <Image src="/images/estate2.jpg" alt="Estate" width={80} height={80} className="rounded-xl shadow-md" />
+          <div className="mb-6 max-w-20 wax-h-20">
+            <img
+              src="/images/Logo.png"
+              alt="Brentfield Estate Logo"
+              className="w-full h-full object-contain border-none"
+            />
+          </div>
+
+          <div className="mb-6 max-w-40 wax-h-40">
+            <img
+              src="/images/brentfield.png"
+              alt="Brentfield Estate Logo"
+              className="w-full h-full object-contain border-none"
+            />
+          </div>
+
+          <div className="mb-6 max-w-20 wax-h-20">
+            <img
+              src="/images/Logo.png"
+              alt="Brentfield Estate Logo"
+              className="w-full h-full object-contain border-none"
+            />
+          </div>
         </div>
 
         {/* Dark Mode Toggle */}
@@ -198,7 +229,9 @@ export default function LoginPage() {
               }`}
             />
           </button>
-          <span className="text-sm text-neutral-700 dark:text-neutral-300">Dark Mode</span>
+          <span className="text-sm text-neutral-700 dark:text-neutral-300">
+            Dark Mode
+          </span>
         </div>
       </div>
     </div>
