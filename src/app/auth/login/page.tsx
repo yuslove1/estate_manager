@@ -43,37 +43,29 @@ export default function LoginPage() {
 
   const initializeRecaptcha = async () => {
     if (recaptchaVerifierRef.current) {
-      console.log("Reusing existing RecaptchaVerifier");
       return recaptchaVerifierRef.current;
     }
 
     try {
-      console.log("Creating new RecaptchaVerifier...");
-      console.log("reCAPTCHA container exists:", !!document.getElementById("recaptcha-container"));
-      console.log("auth object valid:", !!auth);
-
       const verifier = new RecaptchaVerifier(auth, "recaptcha-container", {
         size: "normal",
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         callback: (response: string) => {
-          console.log("✓ reCAPTCHA verified with token:", response.substring(0, 20) + "...");
+          // reCAPTCHA verified
         },
         "expired-callback": () => {
-          console.warn("⚠ reCAPTCHA expired");
           recaptchaVerifierRef.current = null;
           toast.error("reCAPTCHA expired — try again");
         },
         "error-callback": () => {
-          console.error("✗ reCAPTCHA error");
           recaptchaVerifierRef.current = null;
           toast.error("reCAPTCHA error — refresh page");
         },
       });
 
-      console.log("✓ RecaptchaVerifier created successfully");
       recaptchaVerifierRef.current = verifier;
       return verifier;
-    } catch (err) {
-      console.error("✗ reCAPTCHA init failed:", err);
+    } catch {
       recaptchaVerifierRef.current = null;
       throw new Error("Failed to initialize reCAPTCHA. Ensure reCAPTCHA script is loaded.");
     }
@@ -113,10 +105,8 @@ export default function LoginPage() {
         throw new Error(validationData.error || "Validation failed");
       }
 
-      console.log("Initializing reCAPTCHA...");
       const recaptchaVerifier = await initializeRecaptcha();
 
-      console.log("Sending OTP to:", formattedPhone);
       const confirmationResult = await signInWithPhoneNumber(
         auth,
         formattedPhone,
@@ -129,22 +119,13 @@ export default function LoginPage() {
       router.push(`/auth/verify?phone=${encodeURIComponent(formattedPhone)}`);
     } catch (err: unknown) {
       const error = err as { code?: string; message?: string };
-      console.error("Firebase error code:", error?.code);
-      console.error("Firebase error message:", error?.message);
-      console.error("Full error:", err);
 
       recaptchaVerifierRef.current = null;
 
       let msg = "Failed to send OTP";
       
       if (error?.code === "auth/invalid-app-credential") {
-        console.error("INVALID APP CREDENTIAL - Check these settings:");
-        console.error("1. Firebase Console → Authentication → Phone");
-        console.error("2. Is Phone Provider ENABLED?");
-        console.error("3. Firebase Console → Settings → Authorized Domains");
-        console.error("4. Is your domain listed? Current domain:", window.location.hostname);
-        console.error("5. reCAPTCHA Enterprise or Admin Console configured?");
-        msg = "⚠️ Phone Auth setup incomplete. Check browser console for details.";
+        msg = "Phone Auth not configured. Contact support.";
       } else if (error?.code === "auth/invalid-phone-number") {
         msg = "Invalid phone number — use format 080xxxxxxxxx";
       } else if (error?.code === "auth/too-many-requests") {
