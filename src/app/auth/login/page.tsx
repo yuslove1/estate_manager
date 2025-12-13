@@ -148,7 +148,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-transparent flex flex-col justify-center items-center px-4 py-8">
       <div className="mb-6">
-        <Image src="/images/Logo.png" alt="Brentfield Estate Logo" width={100} height={100} className="rounded-2xl shadow-lg" />
+        <Image src="/images/Logo.png" alt="Brentfield Estate Logo" width={160} height={160} className="rounded-2xl shadow-lg" />
       </div>
 
       <div className="rounded-3xl w-full max-w-md p-8 space-y-8 backdrop-blur-md border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 transition-colors">

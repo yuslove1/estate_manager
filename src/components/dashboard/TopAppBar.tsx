@@ -10,7 +10,7 @@ export default function TopAppBar() {
   return (
     <div className="sticky top-0 z-40 backdrop-blur-md border-b dark:bg-neutral-900/80 dark:border-neutral-800/50" style={{ background: "rgba(255, 255, 255, 0.9)", borderColor: "rgba(229, 231, 235, 0.5)" }}>
       <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
-        <Image src="/images/NavLogo.png" alt="Brentfield Estate" width={40} height={40} className="rounded-lg" />
+        <Image src="/images/NavLogo.png" alt="Brentfield Estate" width={60} height={60} className="rounded-lg" />
 
         <button
           onClick={() => router.push("/admin")}
