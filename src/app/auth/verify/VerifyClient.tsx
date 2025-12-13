@@ -22,7 +22,6 @@ export default function VerifyClient() {
     }
 
     if (!confirmationResult) {
-      console.error("No confirmation result in context");
       toast.error("Session expired — resend code");
       router.push("/auth/login");
       return;
@@ -31,15 +30,12 @@ export default function VerifyClient() {
     setIsLoading(true);
 
     try {
-      console.log("Confirming OTP...");
-      const result = await confirmationResult.confirm(otp);
-      console.log("OTP confirmed successfully:", result.user.uid);
+      await confirmationResult.confirm(otp);
 
       if (!phone) {
         throw new Error("Phone number missing from URL");
       }
 
-      console.log("Setting cookie for phone:", phone);
       setCookie("verified_phone", phone, {
         maxAge: 60 * 60 * 24 * 365,
         path: "/",
@@ -52,8 +48,6 @@ export default function VerifyClient() {
       router.push("/dashboard");
     } catch (err: unknown) {
       const error = err as { code?: string; message?: string };
-      console.error("Verify error code:", error?.code);
-      console.error("Verify error message:", error?.message);
       
       if (error?.code === "auth/invalid-verification-code") {
         toast.error("Wrong code — try again");
