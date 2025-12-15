@@ -33,7 +33,17 @@ const startClient = async () => {
     const client = new Client({
         authStrategy: authStrategy,
         puppeteer: {
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
+            headless: true,
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--disable-accelerated-2d-canvas',
+                '--no-first-run',
+                '--no-zygote',
+                '--single-process', // Important for low-memory environments
+                '--disable-gpu'
+            ],
         }
     });
 
