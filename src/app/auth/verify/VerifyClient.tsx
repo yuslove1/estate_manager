@@ -48,8 +48,11 @@ export default function VerifyClient() {
         secure: process.env.NODE_ENV === "production",
       });
 
-      toast.success("Welcome to Brentfield!");
-      await new Promise(resolve => setTimeout(resolve, 500));
+      toast.success("Welcome to Brentfield!", {
+        duration: 3000,
+        icon: '✓',
+      });
+      await new Promise(resolve => setTimeout(resolve, 1500));
       router.push("/dashboard");
     } catch (err: unknown) {
       const error = err as { message?: string };

@@ -58,7 +58,6 @@ export default function AuthLayout({
       <body className={`${inter.className} text-neutral-900 dark:text-white transition-colors duration-300`}>
         <UserProvider>
           {children}
-          <Toaster position="top-right" />
         </UserProvider>
       </body>
     </html>

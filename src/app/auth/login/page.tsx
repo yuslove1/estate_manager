@@ -109,7 +109,11 @@ export default function LoginPage() {
         throw new Error(validationData.error || "Validation failed");
       }
 
-      toast.success("OTP sent via WhatsApp!");
+      toast.success("OTP sent via WhatsApp!", {
+        duration: 3000,
+        icon: '✓',
+      });
+      await new Promise(resolve => setTimeout(resolve, 1000));
       router.push(`/auth/verify?phone=${encodeURIComponent(formattedPhone)}`);
     } catch (err: unknown) {
       const error = err as { code?: string; message?: string };

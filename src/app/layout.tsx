@@ -70,7 +70,40 @@ export default function RootLayout({
           <main className="relative z-10 min-h-screen bg-transparent">
             {children}
           </main>
-          <Toaster position="bottom-center" />
+          <Toaster 
+            position="bottom-center"
+            toastOptions={{
+              duration: 4000,
+              style: {
+                background: '#1f2937',
+                color: '#fff',
+                borderRadius: '12px',
+                padding: '16px 24px',
+                fontSize: '16px',
+                fontWeight: '500',
+                boxShadow: '0 10px 35px rgba(0,0,0,0.3)',
+                border: '1px solid rgba(255,255,255,0.1)',
+              },
+              success: {
+                style: {
+                  background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                },
+                iconTheme: {
+                  primary: '#fff',
+                  secondary: '#10b981',
+                },
+              },
+              error: {
+                style: {
+                  background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                },
+                iconTheme: {
+                  primary: '#fff',
+                  secondary: '#ef4444',
+                },
+              },
+            }}
+          />
         </UserProvider>
       </body>
     </html>
