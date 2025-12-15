@@ -136,8 +136,10 @@ const startSock = async () => {
         const { connection, lastDisconnect, qr } = update;
         
         if (qr) {
-            console.log('QR RECEIVED');
-            qrcode.generate(qr, { small: true });
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qr)}`;
+            console.log('\n=== SCAN THIS QR CODE ===');
+            console.log(qrUrl);
+            console.log('Open the URL in your browser, then scan with WhatsApp\n');
         }
 
         if (connection === 'close') {
