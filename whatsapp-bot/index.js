@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const { default: makeWASocket, useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, makeCacheableSignalKeyStore } = require('@whiskeysockets/baileys');
 const { Boom } = require('@hapi/boom');
 const pino = require('pino');
@@ -23,11 +25,17 @@ const Session = mongoose.model('Session', SessionSchema);
 // Custom MongoDB Auth State
 const useMongoDBAuthState = async (collection) => {
     const writeData = async (data, id) => {
+        const serialized = JSON.parse(JSON.stringify(data, (key, value) => {
+            if (typeof value === 'bigint') return 'BIGINT::' + value.toString();
+            if (value?.type === 'Buffer' && Array.isArray(value?.data)) {
+                return { __type: 'buffer', data: value.data };
+            }
+            return value;
+        }));
+        
         await collection.replaceOne(
             { _id: id },
-            { _id: id, data: JSON.parse(JSON.stringify(data, (key, value) =>
-                typeof value === 'bigint' ? 'BIGINT::' + value.toString() : value
-            )) },
+            { _id: id, data: serialized },
             { upsert: true }
         );
     };
@@ -35,11 +43,15 @@ const useMongoDBAuthState = async (collection) => {
     const readData = async (id) => {
         const result = await collection.findOne({ _id: id });
         if (result?.data) {
-            return JSON.parse(JSON.stringify(result.data), (key, value) =>
-                typeof value === 'string' && value.startsWith('BIGINT::') 
-                    ? BigInt(value.slice(8)) 
-                    : value
-            );
+            return JSON.parse(JSON.stringify(result.data), (key, value) => {
+                if (typeof value === 'string' && value.startsWith('BIGINT::')) {
+                    return BigInt(value.slice(8));
+                }
+                if (value?.__type === 'buffer' && Array.isArray(value?.data)) {
+                    return Buffer.from(value.data);
+                }
+                return value;
+            });
         }
         return null;
     };
@@ -59,7 +71,8 @@ const useMongoDBAuthState = async (collection) => {
                     await Promise.all(ids.map(async (id) => {
                         let value = await readData(`${type}-${id}`);
                         if (type === 'app-state-sync-key' && value) {
-                            value = (await import('@whiskeysockets/baileys')).proto.Message.AppStateSyncKeyData.fromObject(value);
+                            const { proto } = await import('@whiskeysockets/baileys');
+                            value = proto.Message.AppStateSyncKeyData.fromObject(value);
                         }
                         data[id] = value;
                     }));
@@ -72,7 +85,11 @@ const useMongoDBAuthState = async (collection) => {
                             const value = data[category][id];
                             const key = `${category}-${id}`;
                             if (value) {
-                                tasks.push(writeData(value, key));
+                                let toStore = value;
+                                if (value?.toJSON && typeof value.toJSON === 'function') {
+                                    toStore = value.toJSON();
+                                }
+                                tasks.push(writeData(toStore, key));
                             } else {
                                 tasks.push(removeData(key));
                             }
