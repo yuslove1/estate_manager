@@ -49,7 +49,8 @@ export async function POST(request: Request) {
 
     // Call WhatsApp Bot
     try {
-        const botRes = await fetch('http://localhost:3001/send-otp', {
+        const botUrl = process.env.WHATSAPP_BOT_URL || 'http://localhost:3001';
+        const botRes = await fetch(`${botUrl}/send-otp`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ phone: normalizedPhone, otp })
