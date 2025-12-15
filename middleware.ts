@@ -46,11 +46,22 @@ export async function middleware(request: NextRequest) {
       if (dbPhone.startsWith("+234")) dbPhone = "0" + dbPhone.slice(4);
       if (dbPhone.startsWith("234")) dbPhone = "0" + dbPhone.slice(3);
 
-      const { data, error } = await supabase
+      const adminCheckPromise = supabase
         .from("residents")
         .select("is_admin")
         .eq("phone", dbPhone)
         .single();
+
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Timeout")), 5000)
+      );
+
+      const result = (await Promise.race([
+        adminCheckPromise,
+        timeoutPromise,
+      ])) as { data: { is_admin: boolean } | null; error: { message: string } | null };
+
+      const { data, error } = result;
 
       // If not admin → redirect to gate page
       if (!data?.is_admin || error) {

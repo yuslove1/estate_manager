@@ -1,15 +1,49 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Wifi } from "lucide-react";
+import { Wifi, Loader } from "lucide-react";
+import { useRouter } from "next/navigation";
+
+const checkNetworkConnectivity = async (): Promise<boolean> => {
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+    
+    await fetch("/manifest.json", {
+      method: "HEAD",
+      signal: controller.signal,
+      cache: "no-store",
+    });
+    
+    clearTimeout(timeoutId);
+    return true;
+  } catch {
+    return false;
+  }
+};
 
 export default function OfflinePage() {
-  const [lastCode, setLastCode] = useState<string | null>(null);
+  const router = useRouter();
+  const [lastCode, setLastCode] = useState(() =>
+    typeof window !== "undefined"
+      ? localStorage.getItem("last_gate_code")
+      : null
+  );
+  const [isRetrying, setIsRetrying] = useState(false);
 
-  useEffect(() => {
-    const savedCode = localStorage.getItem("last_gate_code");
-    setLastCode(savedCode);
-  }, []);
+  const handleRetry = async () => {
+    setIsRetrying(true);
+    try {
+      const isOnline = await checkNetworkConnectivity();
+      if (isOnline) {
+        router.push("/dashboard");
+      } else {
+        setIsRetrying(false);
+      }
+    } catch {
+      setIsRetrying(false);
+    }
+  };
 
   return (
     <main className="min-h-screen bg-transparent flex flex-col items-center justify-center px-4 py-8">
@@ -50,11 +84,13 @@ export default function OfflinePage() {
         </p>
 
         <button
-          onClick={() => window.location.reload()}
-          className="w-full text-white font-bold py-3 px-6 rounded-full transition backdrop-blur-md border border-blue-400"
+          onClick={handleRetry}
+          disabled={isRetrying}
+          className="w-full text-white font-bold py-3 px-6 rounded-full transition backdrop-blur-md border border-blue-400 disabled:opacity-50 flex items-center justify-center gap-2"
           style={{ background: "rgba(59, 130, 246, 0.9)" }}
         >
-          Retry Connection
+          {isRetrying && <Loader size={20} className="animate-spin" />}
+          {isRetrying ? "Checking Connection..." : "Retry Connection"}
         </button>
       </div>
     </main>
