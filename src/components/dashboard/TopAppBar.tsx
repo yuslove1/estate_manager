@@ -32,7 +32,7 @@ export default function TopAppBar() {
           title="Go to Admin Panel"
         >
           <Lock size={20} />
-          <span className="hidden sm:inline text-sm">Admin</span>
+          <span className=" text-sm">Admin</span>
         </button>
       </div>
     </div>

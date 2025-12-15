@@ -50,6 +50,13 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react"],
   },
+  webpack: (config, { isServer }) => {
+    config.watchOptions = {
+      ...config.watchOptions,
+      ignored: ["**/whatsapp-bot/**", "**/node_modules/**", "**/.git/**"],
+    };
+    return config;
+  },
 };
 
 export default nextConfig;

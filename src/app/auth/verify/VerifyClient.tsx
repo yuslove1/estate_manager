@@ -21,8 +21,8 @@ export default function VerifyClient() {
       return;
     }
 
-    if (!confirmationResult) {
-      toast.error("Session expired — resend code");
+    if (!phone) {
+      toast.error("Phone number missing");
       router.push("/auth/login");
       return;
     }
@@ -30,10 +30,15 @@ export default function VerifyClient() {
     setIsLoading(true);
 
     try {
-      await confirmationResult.confirm(otp);
+      const res = await fetch("/api/auth/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone, otp }),
+      });
 
-      if (!phone) {
-        throw new Error("Phone number missing from URL");
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Verification failed");
       }
 
       setCookie("verified_phone", phone, {
@@ -47,19 +52,8 @@ export default function VerifyClient() {
       await new Promise(resolve => setTimeout(resolve, 500));
       router.push("/dashboard");
     } catch (err: unknown) {
-      const error = err as { code?: string; message?: string };
-      
-      if (error?.code === "auth/invalid-verification-code") {
-        toast.error("Wrong code — try again");
-      } else if (error?.code === "auth/code-expired") {
-        toast.error("Code expired — resend a new one");
-        router.push("/auth/login");
-      } else if (error?.message?.includes("Phone number")) {
-        toast.error("Session error — start over");
-        router.push("/auth/login");
-      } else {
-        toast.error(error?.message || "Verification failed");
-      }
+      const error = err as { message?: string };
+      toast.error(error?.message || "Verification failed");
     } finally {
       setIsLoading(false);
     }

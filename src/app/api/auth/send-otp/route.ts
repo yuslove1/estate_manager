@@ -32,6 +32,38 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "You're not in the residential list, contact the brentfield CDA" }, { status: 403 });
     }
 
+    // Generate OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Store OTP in DB
+    const { error: updateError } = await supabase
+      .from("residents")
+      .update({ otp_code: otp })
+      .eq("phone", normalizedPhoneDB);
+
+    if (updateError) {
+        console.error("Failed to store OTP:", updateError);
+        // Fallback: If column doesn't exist, we can't proceed.
+        return NextResponse.json({ error: "Database error: Please ensure 'otp_code' column exists in residents table." }, { status: 500 });
+    }
+
+    // Call WhatsApp Bot
+    try {
+        const botRes = await fetch('http://localhost:3001/send-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone: normalizedPhone, otp })
+        });
+        
+        if (!botRes.ok) {
+            console.error("Bot failed:", await botRes.text());
+            return NextResponse.json({ error: "Failed to send WhatsApp message. Is the bot running?" }, { status: 500 });
+        }
+    } catch (err) {
+        console.error("Bot connection error:", err);
+        return NextResponse.json({ error: "WhatsApp Bot is not running. Please start the bot script." }, { status: 500 });
+    }
+
     return NextResponse.json({ success: true, phone: normalizedPhone });
   } catch (error) {
     console.error("Validation error:", error);

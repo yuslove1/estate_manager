@@ -109,34 +109,14 @@ export default function LoginPage() {
         throw new Error(validationData.error || "Validation failed");
       }
 
-      const recaptchaVerifier = await initializeRecaptcha();
-
-      const confirmationResult = await signInWithPhoneNumber(
-        auth,
-        formattedPhone,
-        recaptchaVerifier
-      );
-
-      setConfirmationResult(confirmationResult);
-      recaptchaVerifierRef.current = null;
-      toast.success("OTP sent!");
+      toast.success("OTP sent via WhatsApp!");
       router.push(`/auth/verify?phone=${encodeURIComponent(formattedPhone)}`);
     } catch (err: unknown) {
       const error = err as { code?: string; message?: string };
 
-      recaptchaVerifierRef.current = null;
-
       let msg = "Failed to send OTP";
 
-      if (error?.code === "auth/invalid-app-credential") {
-        msg = "Phone Auth not configured. Contact support.";
-      } else if (error?.code === "auth/invalid-phone-number") {
-        msg = "Invalid phone number — use format 080xxxxxxxxx";
-      } else if (error?.code === "auth/too-many-requests") {
-        msg = "Too many attempts — wait a few minutes";
-      } else if (error?.code === "auth/network-request-failed") {
-        msg = "Network error — check your internet";
-      } else if (error?.message) {
+      if (error?.message) {
         msg = error.message;
       }
 
