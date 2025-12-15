@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { User, Moon, Bell, Accessibility, Images, ChevronRight, Shield, Download, LogOut } from "lucide-react";
+import { User, Moon, Bell, Accessibility, Images, ChevronRight, Shield, Download, LogOut, Edit2, X, Check } from "lucide-react";
 import { deleteCookie } from "cookies-next";
 import toast from "react-hot-toast";
 import SettingsTopBar from "@/components/settings/SettingsTopBar";
 import Toggle from "@/components/settings/Toggle";
 import { useUser } from "@/context/UserContext";
+import { createClient } from "@/utils/supabase/client";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -78,7 +79,43 @@ function PWAInstallSection() {
 
 export default function SettingsPage() {
   const router = useRouter();
-  const { user, darkMode, setDarkMode, annNotif, setAnnNotif, gateNotif, setGateNotif, textSize, setTextSize, keyboardNav, setKeyboardNav } = useUser();
+  const { user, darkMode, setDarkMode, annNotif, setAnnNotif, gateNotif, setGateNotif, textSize, setTextSize, keyboardNav, setKeyboardNav, refreshUser } = useUser();
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [editFullName, setEditFullName] = useState(user?.full_name || "");
+  const [editHouseNumber, setEditHouseNumber] = useState(user?.house_number || "");
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    setEditFullName(user?.full_name || "");
+    setEditHouseNumber(user?.house_number || "");
+  }, [user]);
+
+  const handleSaveProfile = async () => {
+    if (!user?.phone) return;
+    
+    setIsSaving(true);
+    try {
+      const supabase = createClient();
+      const { error } = await supabase
+        .from("residents")
+        .update({
+          full_name: editFullName || null,
+          house_number: editHouseNumber || null,
+        })
+        .eq("phone", user.phone);
+
+      if (error) throw error;
+      
+      await refreshUser();
+      setIsEditingProfile(false);
+      toast.success("Profile updated successfully!");
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      toast.error("Failed to update profile");
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   const handleLogout = () => {
     try {
@@ -97,32 +134,87 @@ export default function SettingsPage() {
       <main className="bg-transparent">
         <div className="min-h-screen container max-w-2xl mx-auto px-4 pt-6 pb-24">
           {/* Profile Card */}
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
-              <User size={32} className="text-white" />
-            </div>
-            <div>
-              <h2 className="text-lg font-bold text-neutral-900 dark:text-white">
-                {user?.full_name || "Brentfield Resident"}
-              </h2>
-              <div className="flex flex-col gap-1">
-                <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                  {user?.phone || "Not available"}
-                </p>
-                {user?.house_number && (
-                  <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                    House {user.house_number}
-                  </p>
-                )}
-                {user?.is_admin && (
-                  <div className="flex items-center gap-1 mt-1">
-                    <Shield size={14} className="text-blue-600 dark:text-blue-400" />
-                    <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">Admin</span>
+          {!isEditingProfile ? (
+            <div className="flex items-center justify-between gap-3 mb-8 rounded-xl p-4 backdrop-blur-md border border-neutral-200 dark:border-neutral-700" style={{ background: "rgba(255, 255, 255, 0.85)" }}>
+              <div className="flex items-center gap-3">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                  <User size={32} className="text-white" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-neutral-900 dark:text-white">
+                    {user?.full_name || "Brentfield Resident"}
+                  </h2>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                      {user?.phone || "Not available"}
+                    </p>
+                    {user?.house_number && (
+                      <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                        House {user.house_number}
+                      </p>
+                    )}
+                    {user?.is_admin && (
+                      <div className="flex items-center gap-1 mt-1">
+                        <Shield size={14} className="text-blue-600 dark:text-blue-400" />
+                        <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">Admin</span>
+                      </div>
+                    )}
                   </div>
-                )}
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setEditFullName(user?.full_name || "");
+                  setEditHouseNumber(user?.house_number || "");
+                  setIsEditingProfile(true);
+                }}
+                className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 transition"
+              >
+                <Edit2 size={20} className="text-blue-600 dark:text-blue-400" />
+              </button>
+            </div>
+          ) : (
+            <div className="rounded-xl p-6 mb-8 backdrop-blur-md border border-neutral-200 dark:border-neutral-700 space-y-4" style={{ background: "rgba(255, 255, 255, 0.85)" }}>
+              <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-4">Edit Profile</h3>
+              <div>
+                <label className="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">Full Name</label>
+                <input
+                  type="text"
+                  value={editFullName}
+                  onChange={(e) => setEditFullName(e.target.value)}
+                  placeholder="Your full name"
+                  className="w-full px-4 py-2 rounded-lg bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">House Number</label>
+                <input
+                  type="text"
+                  value={editHouseNumber}
+                  onChange={(e) => setEditHouseNumber(e.target.value)}
+                  placeholder="Your house number"
+                  className="w-full px-4 py-2 rounded-lg bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div className="flex gap-3 pt-2">
+                <button
+                  onClick={handleSaveProfile}
+                  disabled={isSaving}
+                  className="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 disabled:opacity-50 text-white font-bold py-2 rounded-lg transition"
+                >
+                  <Check size={20} />
+                  {isSaving ? "Saving..." : "Save"}
+                </button>
+                <button
+                  onClick={() => setIsEditingProfile(false)}
+                  className="flex-1 flex items-center justify-center gap-2 bg-neutral-300 dark:bg-neutral-700 hover:bg-neutral-400 dark:hover:bg-neutral-600 text-neutral-900 dark:text-white font-bold py-2 rounded-lg transition"
+                >
+                  <X size={20} />
+                  Cancel
+                </button>
               </div>
             </div>
-          </div>
+          )}
 
           {/* PREFERENCES Section */}
           <div className="mb-8">

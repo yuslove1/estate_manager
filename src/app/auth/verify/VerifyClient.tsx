@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { setCookie } from "cookies-next";
 import PrimaryButton from "@/components/ui/PrimaryButton";
 import { useUser } from "@/context/UserContext";
+import { createClient } from "@/utils/supabase/client";
 
 export default function VerifyClient() {
   const [otp, setOtp] = useState("");
@@ -13,7 +14,7 @@ export default function VerifyClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const phone = searchParams.get("phone");
-  const { confirmationResult } = useUser();
+  const { confirmationResult, refreshUser } = useUser();
 
   const handleVerify = async () => {
     if (otp.length !== 6) {
@@ -52,7 +53,10 @@ export default function VerifyClient() {
         duration: 3000,
         icon: '✓',
       });
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      await new Promise(resolve => setTimeout(resolve, 500));
+      await refreshUser();
+      await new Promise(resolve => setTimeout(resolve, 1000));
       router.push("/dashboard");
     } catch (err: unknown) {
       const error = err as { message?: string };

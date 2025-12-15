@@ -144,6 +144,10 @@ export default function LoginPage() {
         />
       </div>
 
+      <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 bg-gradient-to-r from-teal-600 to-blue-600 dark:from-teal-400 dark:to-blue-400 bg-clip-text text-transparent">
+        Welcome to Brentfield Estate
+      </h2>
+
       <div className="rounded-3xl w-full max-w-md p-8 space-y-8 backdrop-blur-md border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 transition-colors">
         <div className="text-center space-y-3">
           <h1 className="text-3xl font-bold text-neutral-900 dark:text-white">
@@ -169,9 +173,6 @@ export default function LoginPage() {
       </div>
 
       <div className="mt-16 text-center space-y-6 w-full max-w-md bg-blend-darken">
-        <p className="text-neutral-800 dark:text-neutral-200 font-semibold text-lg">
-          Welcome to Brentfield Estate
-        </p>
         <div className="flex justify-center gap-6">
           <div className="mb-6 max-w-20 wax-h-20">
             <img
