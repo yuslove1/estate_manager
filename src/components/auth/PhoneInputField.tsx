@@ -18,7 +18,7 @@ export default function PhoneInputField({ value, onChange }: PhoneInputFieldProp
         type="tel"
         value={value}
         onChange={handleChange}
-        placeholder="e.g., 801 234 5678"
+        placeholder="801 234 5678"
         className="flex-1 bg-transparent text-neutral-900 dark:text-white placeholder-neutral-500 dark:placeholder-neutral-400 focus:outline-none text-lg font-medium"
       />
     </div>
