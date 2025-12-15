@@ -22,8 +22,11 @@ export async function middleware(request: NextRequest) {
     request.nextUrl.pathname === "/" ||
     request.nextUrl.pathname === "/auth/login" ||
     request.nextUrl.pathname === "/auth/verify" ||
+    request.nextUrl.pathname === "/offline" ||
     request.nextUrl.pathname.startsWith("/_next") ||
-    request.nextUrl.pathname.startsWith("/favicon.ico")
+    request.nextUrl.pathname.startsWith("/favicon.ico") ||
+    request.nextUrl.pathname.startsWith("/images") ||
+    request.nextUrl.pathname.startsWith("/manifest")
   ) {
     return NextResponse.next();
   }

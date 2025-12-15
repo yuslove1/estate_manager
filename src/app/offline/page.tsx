@@ -5,24 +5,11 @@ import { Wifi } from "lucide-react";
 
 export default function OfflinePage() {
   const [lastCode, setLastCode] = useState<string | null>(null);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const savedCode = localStorage.getItem("last_gate_code");
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLastCode(savedCode);
-    setMounted(true);
   }, []);
-
-  if (!mounted) {
-    return (
-      <main className="min-h-screen bg-transparent flex flex-col items-center justify-center px-4 py-8">
-        <div className="text-center max-w-md backdrop-blur-md rounded-xl p-6" style={{ background: "rgba(255, 255, 255, 0.9)" }}>
-          <p className="text-neutral-600">Loading...</p>
-        </div>
-      </main>
-    );
-  }
 
   return (
     <main className="min-h-screen bg-transparent flex flex-col items-center justify-center px-4 py-8">
